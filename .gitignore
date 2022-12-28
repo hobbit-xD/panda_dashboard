@@ -1,0 +1,4 @@
+venv/
+.vscode
+m3_project.pdf
+__pycache__
