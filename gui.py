@@ -89,13 +89,13 @@ class WaterTemp:
         draw_text(surface, level_text, self.font, color, (90, 20), "center")
 
 
-class Battery:
+class FuelLevel:
     def __init__(self):
         self.font = pygame.font.Font(None, 30)
 
-    def draw(self, surface, battery):
-        battery_text = "{}V".format(float(battery))
-        draw_text(surface, battery_text, self.font,
+    def draw(self, surface, fuel_level):
+        fuel_text = "{}%".format(float(fuel_level))
+        draw_text(surface, fuel_text, self.font,
                   WHITE, (30, 20), "center")
 
 
@@ -112,7 +112,7 @@ if __name__ == '__main__':
     speedo = Spedometer()
     tach = Tachometer()
     waterTemp = WaterTemp()
-    battery = Battery()
+    fuel = FuelLevel()
 
     while True:
         for event in pygame.event.get():
@@ -129,6 +129,6 @@ if __name__ == '__main__':
         speedo.draw(SCREEN, ecuObject.speed)
         tach.draw(SCREEN, ecuObject.rpm)
         waterTemp.draw(SCREEN, ecuObject.coolant_temp)
-        battery.draw(SCREEN, 12.2)
+        fuel.draw(SCREEN, ecuObject.fuel_level)
 
         pygame.display.update()

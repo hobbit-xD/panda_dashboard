@@ -7,16 +7,20 @@ class ecuThread():
     rpm = 0
     speed = 0
     coolant_temp = 0
+    fuel_level = 0
 
     def new_rpm(self, response):
         self.rpm = int(response.value.magnitude)
-        print(self.rpm)
 
     def new_speed(self, response):
         self.speed = int(response.value.magnitude)
 
-    def new_coolant_temp(self, response):
+    def new_coolantTemp(self, response):
         self.coolant_temp = int(response.value.magnitude)
+    
+    def new_fuelLevel(self,response):
+        self.fuel_level = int(round(response.value.magnitude))
+
 
     def __init__(self):
         # Display all the port available
@@ -33,20 +37,20 @@ class ecuThread():
 
         print(self.connection.status())
 
-       
         # Watch everything we care about.
         self.connection.watch(obd.commands.RPM, callback=self.new_rpm)
         self.connection.watch(obd.commands.SPEED, callback=self.new_speed)
         self.connection.watch(obd.commands.COOLANT_TEMP,
-                                  callback=self.new_coolant_temp)
+                              callback=self.new_coolantTemp)
+        self.connection.watch(obd.commands.FUEL_LEVEL, callback=self.new_fuelLevel)
         
-        #Start the connection
+
+        # Start the connection
         self.connection.start()
 
-        #Set ready flag so we can boot the GUI
+        # Set ready flag so we can boot the GUI
         config.ecuReady = True
-        
-        
+
     def closeConnection(self):
         print("Closing connection...")
         self.connection.stop()
