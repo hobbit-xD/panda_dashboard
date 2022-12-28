@@ -1,5 +1,8 @@
 import sys
 import pygame
+import ecu
+import config
+import time
 
 SIZE = width, height = 120, 160
 BLACK = (0, 0, 0)
@@ -98,6 +101,13 @@ class Battery:
 
 if __name__ == '__main__':
 
+    ecuObject = ecu.ecuThread()
+
+    while not config.ecuReady:
+        time.sleep(.01)
+
+    
+
     pygame.init()
     SCREEN = pygame.display.set_mode(SIZE)
 
@@ -109,16 +119,18 @@ if __name__ == '__main__':
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                ecuObject.closeConnection()
                 pygame.quit()
                 sys.exit()
 
+
         SCREEN.fill(BLACK)
-        rpmColor(SCREEN, 6000)
+        rpmColor(SCREEN, ecuObject.rpm)
         draw_grid(SCREEN)
 
-        speedo.draw(SCREEN, 100)
-        tach.draw(SCREEN, 6000)
-        waterTemp.draw(SCREEN, 90)
+        speedo.draw(SCREEN, ecuObject.speed)
+        tach.draw(SCREEN, ecuObject.rpm)
+        waterTemp.draw(SCREEN, ecuObject.coolant_temp)
         battery.draw(SCREEN, 12.2)
 
         pygame.display.update()
