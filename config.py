@@ -1,1 +1,1 @@
-ecuReady = True
+ecuReady = False

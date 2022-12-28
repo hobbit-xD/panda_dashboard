@@ -10,6 +10,7 @@ class ecuThread():
 
     def new_rpm(self, response):
         self.rpm = int(response.value.magnitude)
+        print(self.rpm)
 
     def new_speed(self, response):
         self.speed = int(response.value.magnitude)
@@ -28,23 +29,24 @@ class ecuThread():
 
         # Connection to ECU
         print("Connecting...")
-        self.connection = obd.Async("/dev/rfcomm1", 115200, "3", fast=False)
+        self.connection = obd.Async("/dev/rfcomm1")
 
         print(self.connection.status())
 
-        if (self.connection.is_connected == True):
-            print("Connected")
-
-            # Watch everything we care about.
-            self.connection.watch(obd.commands.RPM, callback=self.new_rpm)
-            self.connection.watch(obd.commands.SPEED, callback=self.new_speed)
-            self.connection.watch(obd.commands.COOLANT_TEMP,
+       
+        # Watch everything we care about.
+        self.connection.watch(obd.commands.RPM, callback=self.new_rpm)
+        self.connection.watch(obd.commands.SPEED, callback=self.new_speed)
+        self.connection.watch(obd.commands.COOLANT_TEMP,
                                   callback=self.new_coolant_temp)
+        
+        #Start the connection
+        self.connection.start()
 
-            config.ecuReady = True
-        else:
-            print("Not connected")
-
+        #Set ready flag so we can boot the GUI
+        config.ecuReady = True
+        
+        
     def closeConnection(self):
         print("Closing connection...")
         self.connection.stop()

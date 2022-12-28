@@ -106,8 +106,6 @@ if __name__ == '__main__':
     while not config.ecuReady:
         time.sleep(.01)
 
-    
-
     pygame.init()
     SCREEN = pygame.display.set_mode(SIZE)
 
