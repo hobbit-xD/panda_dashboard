@@ -3,7 +3,7 @@ import sys
 import os
 
 
-SIZE = width, height = 120, 160
+SIZE = width, height = 128, 160
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 

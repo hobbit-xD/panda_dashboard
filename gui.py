@@ -3,8 +3,9 @@ import pygame
 import ecu
 import config
 import time
+import os
 
-SIZE = width, height = 120, 160
+SIZE = width, height = 128, 160
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 RED = (255, 0, 0)
@@ -105,9 +106,16 @@ if __name__ == '__main__':
 
     while not config.ecuReady:
         time.sleep(.01)
-
-    pygame.init()
-    SCREEN = pygame.display.set_mode(SIZE)
+        
+    if config.piTFT:
+        os.putenv('SDL_FBDEV', '/dev/fb0')
+        pygame.init()
+        pygame.mouse.set_visible(0)
+        SCREEN = pygame.display.set_mode(SIZE)
+        
+    else:
+        SCREEN = pygame.display.set_mode(SIZE)
+        
 
     speedo = Spedometer()
     tach = Tachometer()
