@@ -2,7 +2,6 @@ from PIL import Image
 from PIL import ImageDraw
 from PIL import ImageFont
 import time
-
 import ST7735
 #import os
 
@@ -10,7 +9,16 @@ import ST7735
 SIZE = width, height = 128, 160
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
+RED = (255, 0, 0)
+GREEN = (0, 255, 0)
+BLUE = (0, 0, 255)
 
+
+
+def draw_text(surface, text, fontObj, color, pos, position="center"):
+    
+    surface.text(pos,text,fill=color,font=fontObj,align=position,anchor='mm')
+    
 
 def draw_grid(surface):
     # horizontal lines
@@ -19,6 +27,70 @@ def draw_grid(surface):
 
     # vertical lines
     surface.line([(60, 0), (60, 40)], fill=WHITE, width=1)
+    
+    
+def rpmColor(surface, rpm):
+
+    if (rpm < 4000):
+        color = BLACK
+        surface.rectangle([(0,0),(128,160)], fill=color,outline=None,width=0)
+    elif (rpm >= 4000 and rpm < 5000):
+        color = GREEN
+        surface.rectangle([(0,0),(128,160)], fill=color,outline=None,width=0)
+    elif (rpm >= 5000 and rpm < 6000):
+        color = RED
+        surface.rectangle([(0,0),(128,160)], fill=color,outline=None,width=0)
+    elif (rpm >= 6000):
+        color = BLUE
+        surface.rectangle([(0,0),(128,160)], fill=color,outline=None,width=0)
+
+
+class Tachometer:
+    def __init__(self):
+        self.font = ImageFont.truetype('/usr/share/fonts/truetype/roboto/slab/RobotoSlab-Regular.ttf', 25)
+    
+    def draw(self, surface, rpm):
+        rpm_text = "{}rpm".format(int(rpm))
+        draw_text(surface, rpm_text, self.font,
+                  WHITE, (60, 140), "center")
+
+
+class Spedometer:
+    def __init__(self):
+        self.speedFont = ImageFont.truetype('/usr/share/fonts/truetype/roboto/slab/RobotoSlab-Regular.ttf', 50)
+        self.textFont = ImageFont.truetype('/usr/share/fonts/truetype/roboto/slab/RobotoSlab-Regular.ttf', 20)
+
+    def draw(self, surface, speed):
+        speed_text = "{}".format(int(speed))
+        draw_text(surface, speed_text, self.speedFont,
+                  WHITE, (60, 70), "center")
+        draw_text(surface, "Km/h", self.textFont, WHITE, (60, 100), "center")
+
+
+class WaterTemp:
+    def __init__(self):
+        self.font = ImageFont.truetype('/usr/share/fonts/truetype/roboto/slab/RobotoSlab-Regular.ttf', 25)
+
+    def draw(self, surface, temp):
+        level_text = "{0:>3}".format(temp)
+        color = BLUE
+        if temp > 100:
+            color = RED
+        elif temp > 85:
+            color = GREEN
+        draw_text(surface, level_text, self.font, color, (90, 20), "center")
+
+
+class FuelLevel:
+    def __init__(self):
+        self.font = ImageFont.truetype('/usr/share/fonts/truetype/roboto/slab/RobotoSlab-Regular.ttf', 25)
+
+    def draw(self, surface, fuel_level):
+        fuel_text = "{}%".format(int(fuel_level))
+        draw_text(surface, fuel_text, self.font,
+                  WHITE, (30, 20), "center")
+
+
 
 
 # Create ST7735 LCD display class.
@@ -36,10 +108,24 @@ disp = ST7735.ST7735(
 
 disp.begin()
 
-img = Image.new('RGB', (128,160), color=BLACK)
+img = Image.new('RGBA', SIZE, color=BLACK)
 
-surface = ImageDraw.Draw(img)
+speedo = Spedometer()
+tach = Tachometer()
+waterTemp = WaterTemp()
+fuel = FuelLevel()
 
-draw_grid(surface)
+SCREEN = ImageDraw.Draw(img)
 
-disp.display(img)
+
+while True:
+        
+    rpmColor(SCREEN,3500)
+    draw_grid(SCREEN)
+    
+    speedo.draw(SCREEN, 67)
+    tach.draw(SCREEN, 3500)
+    waterTemp.draw(SCREEN, 90)
+    fuel.draw(SCREEN, 56)
+    
+    disp.display(img)
