@@ -5,7 +5,7 @@ import time
 import ST7735
 import ecu
 import config
-
+import sys
 
 SIZE = width, height = 128, 160
 BLACK = (0, 0, 0)
@@ -13,7 +13,6 @@ WHITE = (255, 255, 255)
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
-
 
 def draw_text(surface, text, fontObj, color, pos, position="center"):
 
@@ -32,24 +31,20 @@ def draw_grid(surface):
 
 def rpmColor(surface, rpm):
 
-    if (rpm < 4000):
+    if (rpm < 2500):
         color = BLACK
         surface.rectangle([(0, 0), (128, 160)], fill=color,
                           outline=None, width=0)
-    elif (rpm >= 4000 and rpm < 5000):
+    elif (rpm >= 2500 and rpm < 3000):
         color = GREEN
         surface.rectangle([(0, 0), (128, 160)], fill=color,
                           outline=None, width=0)
-    elif (rpm >= 5000 and rpm < 6000):
+    elif (rpm >= 3000):
         color = RED
         surface.rectangle([(0, 0), (128, 160)], fill=color,
                           outline=None, width=0)
-    elif (rpm >= 6000):
-        color = BLUE
-        surface.rectangle([(0, 0), (128, 160)], fill=color,
-                          outline=None, width=0)
-
-
+    
+    
 class Tachometer:
     def __init__(self):
         self.font = ImageFont.truetype(
@@ -103,11 +98,14 @@ class FuelLevel:
 
 if __name__ == "__main__":
 
+    print(config.ecuReady)
+    
     ecuObject = ecu.ecuThread()
 
     while not config.ecuReady:
         time.sleep(.01)
 
+    print(config.ecuReady)
     # Create ST7735 LCD display class.
     disp = ST7735.ST7735(
         port=0,
@@ -121,6 +119,7 @@ if __name__ == "__main__":
         spi_speed_hz=10000000,
         invert=False
     )
+    
 
     disp.begin()
 
@@ -133,7 +132,9 @@ if __name__ == "__main__":
 
     SCREEN = ImageDraw.Draw(img)
 
-    while True:
+    while not config.exit_loop:
+        
+        print(config.exit_loop)
 
         rpmColor(SCREEN, ecuObject.rpm)
         draw_grid(SCREEN)
@@ -141,6 +142,9 @@ if __name__ == "__main__":
         speedo.draw(SCREEN, ecuObject.speed)
         tach.draw(SCREEN, ecuObject.rpm)
         waterTemp.draw(SCREEN, ecuObject.coolant_temp)
-        fuel.draw(SCREEN, ecuObject.rpm)
+        fuel.draw(SCREEN, ecuObject.fuel_level)
 
         disp.display(img)
+    
+    ecuObject.closeConnection()
+    sys.exit()
