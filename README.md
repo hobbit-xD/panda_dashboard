@@ -1,5 +1,8 @@
 # Panda Digital Mini-Dashboard
 
+The main goal of this project is to create a digital dashboard containing the data missing in the original dashboard, for example engine revs, water temperature and so on.
+Data are retrived from OBD2 and processed from Raspberry pi.
+
 ## Display wiring
 
 | Dsiplay | Raspberry Pi 4 |
