@@ -1,7 +1,10 @@
 # Panda Digital Mini-Dashboard
 
+A digital dashboard using Python, a Raspberry Pi 4, vehicle's On Board Diagnostics (OBD-II) Port and displaying data in an external 1.8" TFT display, placed in the watch case.
+
+## Motivation
+
 The main goal of this project is to create a digital dashboard containing the data missing in the original dashboard, for example engine revs, water temperature and so on.
-Data are retrived from OBD2 and processed from Raspberry pi and displayed in an external 1.8" TFT display, placed in the watch case.
 
 ## Display wiring
 
@@ -22,3 +25,10 @@ Data are retrived from OBD2 and processed from Raspberry pi and displayed in an 
 |--------|----------------|
 | VCC    | 3,3V (17)      |
 | PIN    | GPIO 15 (10)   |
+
+
+## Hardware
+
+- Raspberry Pi 4
+- Touchscreen Display of your choice.
+- Bluetooth ELM327 OBD-II Device
