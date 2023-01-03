@@ -15,6 +15,9 @@ GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
 
 
+
+
+
 def draw_text(surface, text, fontObj, color, pos, position="center"):
 
     surface.text(pos, text, fill=color, font=fontObj,
@@ -103,7 +106,8 @@ class FuelLevel:
 
 if __name__ == "__main__":
 
-
+    
+    
     # Create ST7735 LCD display class.
     disp = ST7735.ST7735(
         port=0,
@@ -117,7 +121,7 @@ if __name__ == "__main__":
         spi_speed_hz=10000000,
         invert=False
     )
-
+    
     disp.begin()
 
     img = Image.new('RGBA', SIZE, color=BLACK)
@@ -140,6 +144,7 @@ if __name__ == "__main__":
         fuel.draw(SCREEN, 8)
 
         disp.display(img)
+    
     
     print("uscendo")
     sys.exit()

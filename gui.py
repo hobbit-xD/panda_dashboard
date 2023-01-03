@@ -12,7 +12,6 @@ RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
 
-
 def draw_text(surface, text, fontObj, color, pos, position="center"):
     textSurfaceObj = fontObj.render(text, True, color, BLACK)
     textSurfaceObj.set_colorkey(BLACK)
@@ -56,7 +55,7 @@ def rpmColor(surface, rpm):
 
 class Tachometer:
     def __init__(self):
-        self.font = pygame.font.Font(None, 30)
+        self.font = pygame.font.Font(config.font_name, 30)
 
     def draw(self, surface, rpm):
         rpm_text = "{}rpm".format(int(rpm))
@@ -66,8 +65,8 @@ class Tachometer:
 
 class Spedometer:
     def __init__(self):
-        self.speedFont = pygame.font.Font(None, 60)
-        self.textFont = pygame.font.Font(None, 30)
+        self.speedFont = pygame.font.Font(config.font_name, 60)
+        self.textFont = pygame.font.Font(config.font_name, 30)
 
     def draw(self, surface, speed):
         speed_text = "{}".format(int(speed))
@@ -78,10 +77,10 @@ class Spedometer:
 
 class WaterTemp:
     def __init__(self):
-        self.font = pygame.font.Font(None, 30)
+        self.font = pygame.font.Font(config.font_name, 30)
 
     def draw(self, surface, temp):
-        level_text = "{0:>3}°C".format(temp)
+        level_text = "{0:>3}".format(temp)
         color = BLUE
         if temp > 100:
             color = RED
@@ -92,7 +91,7 @@ class WaterTemp:
 
 class FuelLevel:
     def __init__(self):
-        self.font = pygame.font.Font(None, 30)
+        self.font = pygame.font.Font(config.font_name, 30)
 
     def draw(self, surface, fuel_level):
         fuel_text = "{}%".format(float(fuel_level))
@@ -108,7 +107,7 @@ if __name__ == '__main__':
         time.sleep(.01)
         
     if config.piTFT:
-        os.putenv('SDL_FBDEV', '/dev/fb0')
+        os.environ['SDL_FBDEV'] = '/dev/fb1'
         pygame.init()
         pygame.mouse.set_visible(0)
         SCREEN = pygame.display.set_mode(SIZE)
@@ -124,7 +123,7 @@ if __name__ == '__main__':
 
     while True:
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
+            if event.type == pygame.QUIT or config.exit_loop == True:
                 ecuObject.closeConnection()
                 pygame.quit()
                 sys.exit()

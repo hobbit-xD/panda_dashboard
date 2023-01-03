@@ -2,8 +2,9 @@ import pygame
 import sys
 import os
 
+os.environ["SDL_FBDEV"] = "/dev/fb1"
 
-SIZE = width, height = 128, 160
+SIZE = width, height = 128,160
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 
@@ -17,7 +18,6 @@ def draw_grid(surface):
 
 if __name__ == '__main__':
 
-    os.putenv('SDL_FBDEV', '/dev/fb1')
     pygame.init()
     pygame.mouse.set_visible(0)
     SCREEN = pygame.display.set_mode(SIZE)
