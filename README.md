@@ -31,4 +31,4 @@ The main goal of this project is to create a digital dashboard containing the da
 
 - Raspberry Pi 4
 - Touchscreen Display of your choice.
-- Bluetooth ELM327 OBD-II Device
+- Bluetooth ELM327 OBD-II Device (AA:BB:CC:11:22:33)
