@@ -1,6 +1,8 @@
 # Panda Digital Mini-Dashboard
 
-A digital dashboard using Python, a Raspberry Pi 4, vehicle's On Board Diagnostics (OBD-II) Port and displaying data in an external 1.8" TFT display, placed in the watch case.
+A digital dashboard using Python, a Raspberry Pi 4/Pi Pico W, vehicle's On Board Diagnostics (OBD-II) Port and displaying data in an external 1.8" TFT display, placed in the watch case.
+
+![Dash Photo](./pandaDashboard_small.jpg)
 
 ## Motivation
 
